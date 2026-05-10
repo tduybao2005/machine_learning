@@ -1,0 +1,16 @@
+Trong báo cáo trình bày các mục:
+
+1. Đọc dữ liệu CSV (semi_supervised_data.csv). Thực hiện bài toàn gán nhãn tự động cho 3 class ứng dụng mô hình RBF và kỹ thuật clustering.
+	a. Gán nhãn lại toàn bộ dữ liệu sau khi clustering.
+	b. Giữ nguyên các class gốc, chỉ gán nhãn cho các dữ liệu chưa có nhãn
+
+2. Xây dựng mô hình trích đặc trưng tự động cho tập dữ liệu trên. Yêu cầu có ít nhất 10 đặc trưng.
+	a. Đánh giá mô hình trích đặc trưng (độ tương đồng đặc trưng trong cùng class, khoảng cách trung bình các đặc trưng khác class)
+	b. Thêm mô hình phân loại dùng mạng NN, đánh giá mô hình sử trích đặc trưng chỉ dùng tiêu chí sau khi qua bộ phân loại. 
+	c. Nhận xét, so sánh 2 kết quả mô hình trích đặc trưng trong 2 trường hợp trên (độ tương đồng đặc trưng trong cùng class, khoảng cách trung bình các đặc trưng khác class)
+
+Sinh viên nộp code + file báo cáo (PDF/Word) qua email: caovankien@iuh.edu.vn. Tiêu đề email, tên file báo cáo có dạng [HocMay-BT2]HoVaTen-MSSV.
+Hạn gửi bài vào 22h ngày 10/10/2025. 
+Sau hạn trên nếu chưa đủ 15 bài, sẽ nhận tiếp đến tối đa 15 bài báo cáo.
+Code trùng nhau hoặc có hình ảnh giống nhau sẽ được 0 điểm x3. 
+

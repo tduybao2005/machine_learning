@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+import os
+os.environ['TORCH_DISABLE_COMPILE'] = '1' 
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -40,7 +42,6 @@ def clustering_loss(x, probs, centers, sigmas, epoch):
             sigma_loss += (sigmas[k] ** 2 - cluster_var).pow(2)
     return loss / len(x) + sigma_loss
 
-# ── 4. Khởi tạo tâm ngẫu nhiên trong phạm vi dữ liệu ────────────
 x_min, x_max = X.min(axis=0), X.max(axis=0)
 init_centers = np.random.uniform(x_min, x_max, size=(num_clusters, 2)).astype(np.float32)
 
@@ -66,14 +67,23 @@ with torch.no_grad():
     sigma_learned   = model.sigma.detach().numpy()
 
 # Khớp cluster index với label gốc bằng majority vote
-from scipy.optimize import linear_sum_assignment
+from itertools import permutations
 labeled_mask = (labels_orig != -1)
 cost_matrix = np.zeros((num_clusters, num_clusters))
 for c in range(num_clusters):
     for l in range(num_clusters):
         cost_matrix[c, l] = -np.sum((labels_cluster[labeled_mask] == c) & (labels_orig[labeled_mask] == l))
-row_ind, col_ind = linear_sum_assignment(cost_matrix)
-mapping = {row_ind[i]: col_ind[i] for i in range(num_clusters)}
+
+# Tìm permutation tối ưu bằng brute force
+best_cost = float('inf')
+best_perm = None
+for perm in permutations(range(num_clusters)):
+    cost = sum(cost_matrix[i, perm[i]] for i in range(num_clusters))
+    if cost < best_cost:
+        best_cost = cost
+        best_perm = perm
+
+mapping = {i: best_perm[i] for i in range(num_clusters)}
 labels_cluster = np.array([mapping[l] for l in labels_cluster])
 # Sắp xếp lại centers và sigma theo mapping
 inv_mapping = {v: k for k, v in mapping.items()}
